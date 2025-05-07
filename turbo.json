@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["./dist"]
+      "outputs": ["dist/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -15,6 +15,9 @@
     },
     "clean": {
       "cache": false
+    },
+    "prettier": {
+      "dependsOn": []
     }
   }
 }
