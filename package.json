@@ -9,7 +9,6 @@
   "engines": {
     "node": ">=18"
   },
-  "workspaces": ["apps/*", "packages/*"],
   "packageManager": "pnpm@8.14.0",
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

@@ -8,12 +8,7 @@ import { Theme } from '../../model/interface';
 
 @Component({
   selector: 'app-theme-picker',
-  imports: [
-    MatMenuModule,
-    NgOptimizedImage,
-    MatIconButton,
-    MatIcon
-  ],
+  imports: [MatMenuModule, NgOptimizedImage, MatIconButton, MatIcon],
   templateUrl: './theme-picker.component.html',
   styleUrl: './theme-picker.component.scss'
 })
@@ -25,9 +20,8 @@ export class ThemePickerComponent {
   ngOnInit(): void {
     this.themes.set(this.themeService.themes);
   }
-  
-  protected setTheme(id:string) {
+
+  protected setTheme(id: string) {
     this.themeService.setTheme(id);
   }
-
 }

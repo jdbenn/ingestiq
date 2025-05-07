@@ -2,14 +2,16 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/functions/*.js",
+  "main": "dist/functions/*.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "clean": "rimraf dist",
     "prestart": "npm run clean && npm run build",
     "start": "func start",
-    "test": "echo \"No tests yet...\""
+    "test": "echo \"No tests yet...\"",
+    "lint": "eslint . --max-warnings 0",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@azure/functions": "^4.0.0"

@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --port 4201",
+    "start": "ng serve --configuration development",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "eslint . --max-warnings 0",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .angular"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .angular",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@angular/animations": "^19.2.10",

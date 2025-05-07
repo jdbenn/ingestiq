@@ -2,8 +2,10 @@
 
 mat-toolbar {
   justify-content: space-between;
-  @include mat.toolbar-overrides((
-    container-background-color: var(--mat-sys-primary),
-    container-text-color: var(--mat-sys-secondary),
-  ));
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-primary),
+      container-text-color: var(--mat-sys-secondary)
+    )
+  );
 }
