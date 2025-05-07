@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+
+.theme-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-right: 1em;
+    border-radius: 5px;
+}
+
+.theme-menu-item-text {
+    color: var(--mat-sys-background);
+}  
+
+mat-icon {
+    @include mat.icon-overrides((color:var(--mat-sys-secondary)));
+}

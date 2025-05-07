@@ -1,12 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MyCounterButtonComponent } from '@repo/ui';
+import { ThemeService } from '@repo/shared/services';
+import { MatToolbar } from '@angular/material/toolbar';
+import { ThemePickerComponent } from '@repo/shared/components';
+
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, MyCounterButtonComponent],
+    standalone: true,
+    imports: [
+      RouterOutlet,
+      MatToolbar,
+      ThemePickerComponent
+    ],
     templateUrl: './app.component.html',
-    styleUrl: './app.component.css'
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'web';
+  private readonly themeService = inject(ThemeService);
 }
