@@ -4,7 +4,7 @@ var project = toLower(projectName)
 
 resource ingestStorageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' = {
   name: '${project}storage'
-  location: resourceGroup().location
+  location: az.resourceGroup().location
   sku: {
     name: 'Standard_LRS'
   }
