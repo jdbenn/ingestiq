@@ -23,5 +23,5 @@ jobs:
           scope: resourcegroup
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: IngestIq
-          template: ./packages/infra/main.bicep
+          template: ./repo/packages/infra/main.bicep
           parameters: subscriptionId=${{ secrets.AZURE_SUBSCRIPTION_ID }}
