@@ -15,3 +15,13 @@ module storage 'modules/storage.bicep' = {
     projectName: projectName
   } 
 }
+
+module function 'modules/function.bicep' = {
+  name: 'function'
+  scope: ingestrg
+  params: {
+    functionAppName: 'IngestIQ'
+    storageAccountName: storage.outputs.storageAccountName
+    projectName: projectName
+  }
+}

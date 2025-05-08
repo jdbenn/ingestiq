@@ -33,3 +33,5 @@ resource ingestQueue 'Microsoft.Storage/storageAccounts/queueServices/queues@202
     }
   }
 }
+
+output storageAccountName string = ingestStorageAccount.name
