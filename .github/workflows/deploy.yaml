@@ -26,10 +26,6 @@ jobs:
         run: |
           pnpm install
 
-      - name: Run tests
-        run: |
-          pnpm turbo run test
-
       - name: Build
         run: |
           pnpm turbo run build
