@@ -1,14 +1,11 @@
-targetScope = 'subscription'
+
+param subscriptionId string
 
 var projectName = 'IngestIQ'
 
-@description('Resource group for the IngestIQ project.')
-resource ingestrg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: projectName
-  location: deployment().location
-  tags: {
-    project: projectName
-  }
+resource ingestrg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
+  name: 'IngestIQ'
+  scope: subscription(subscriptionId)
 }
 
 module storage 'modules/storage.bicep' = {
