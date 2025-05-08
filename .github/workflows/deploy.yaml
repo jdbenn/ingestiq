@@ -12,8 +12,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: repo
 
       - uses: pnpm/action-setup@v2
         with:
@@ -26,17 +24,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd repo
           pnpm install
 
       - name: Run tests
         run: |
-          cd repo
           pnpm turbo run test
 
       - name: Build
         run: |
-          cd repo
           pnpm turbo run build
 
       - uses: azure/login@v1
@@ -50,7 +45,7 @@ jobs:
           scope: resourcegroup
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: IngestIq
-          template: ./repo/packages/infra/main.bicep
+          template: ./packages/infra/main.bicep
           parameters: subscriptionId=${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 
@@ -58,4 +53,4 @@ jobs:
         uses: azure/functions-action@v1
         with:
           app-name: IngestIq
-          package: repo/packages/api/dist
+          package: ./packages/api/dist
