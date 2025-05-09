@@ -60,34 +60,36 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
     }
     httpsOnly: true
   }
-  resource stagingSlot 'slots' = {
-    name: 'staging'
-    location: resourceGroup().location
-    identity: {
-      type: 'SystemAssigned'
-    }
-    properties: {
-      serverFarmId: hostingPlan.id
-      siteConfig: {
-        linuxFxVersion: 'NODE|20'
-        appSettings: [
-          {
-            name: 'AzureWebJobsStorage'
-            value: azureWebJobsStorage
-          }
-          {
-            name: 'FUNCTIONS_EXTENSION_VERSION'
-            value: '~4'
-          }
-          {
-            name: 'FUNCTIONS_WORKER_RUNTIME'
-            value: 'node'
-          }
-        ]
-      }
-      httpsOnly: true
-    }
-  }
   
 }
 
+
+resource stagingSlot 'Microsoft.Web/sites/slots@2024-04-01' = {
+  parent: functionApp
+  name: 'staging'
+  location: resourceGroup().location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    serverFarmId: hostingPlan.id
+    siteConfig: {
+      linuxFxVersion: 'NODE|20'
+      appSettings: [
+        {
+          name: 'AzureWebJobsStorage'
+          value: azureWebJobsStorage
+        }
+        {
+          name: 'FUNCTIONS_EXTENSION_VERSION'
+          value: '~4'
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME'
+          value: 'node'
+        }
+      ]
+    }
+    httpsOnly: true
+  }
+}
