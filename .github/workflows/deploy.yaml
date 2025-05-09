@@ -84,4 +84,4 @@ jobs:
         uses: Azure/functions-action@v1
         with:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: .apps/api/api.zip
+          package: ./apps/api/api.zip
