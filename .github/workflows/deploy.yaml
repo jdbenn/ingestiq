@@ -50,7 +50,7 @@ jobs:
           parameters: subscriptionId=${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
   apps:
-    needs: deploy-infra
+    needs: infra
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
