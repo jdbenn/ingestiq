@@ -13,6 +13,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' existing 
   name: storageAccountName
 }
 
+
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: hostingPlanName
   location: resourceGroup().location
@@ -28,6 +29,9 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
+var storageKey = storageAccount.listKeys().keys[0].value
+var azureWebJobsStorage = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageKey};EndpointSuffix=core.windows.net'
+
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   name: functionAppName
   location: resourceGroup().location
@@ -42,7 +46,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};EndpointSuffix=core.windows.net'
+          value: azureWebJobsStorage
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
