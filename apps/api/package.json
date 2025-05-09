@@ -4,9 +4,9 @@
   "description": "",
   "main": "dist/functions/*.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp host.json dist/host.json",
     "watch": "tsc -w",
-    "clean": "rimraf dist",
+    "clean": "rm -rf dist && rm -rf node_modules",
     "prestart": "npm run clean && npm run build",
     "start": "func start",
     "test": "echo \"No tests yet...\"",

@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+env:
+  AZURE_FUNCTIONAPP_NAME: 'your-app-name'   
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'apps/api'       
+  NODE_VERSION: '22.x'     
+
 permissions:
   id-token: write
   contents: read
@@ -62,18 +67,21 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
       - name: Install dependencies
         run: |
-          npm install -g azure-functions-core-tools@4 --unsafe-perm true
-          pnpm install
+          pnpm install --filter=api
+          turbo build --filter=api
 
-      - name: Build
+      - name: Zip api
         run: |
-          pnpm turbo run build
+          cd apps/api/dist
+          zip -r ../api.zip .
 
-      - name: Deploy to Azure Function App (staging slot)
-        run: func azure functionapp publish IngestIQ --slot staging
-        working-directory: ./apps/api
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+          package: .apps/api/api.zip
