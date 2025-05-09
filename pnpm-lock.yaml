@@ -33,9 +33,6 @@ importers:
       azure-functions-core-tools:
         specifier: ^4.x
         version: 4.0.7030
-      eslint:
-        specifier: ^8.57.0
-        version: 8.57.1
       rimraf:
         specifier: ^5.0.0
         version: 5.0.10
