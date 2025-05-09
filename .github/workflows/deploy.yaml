@@ -52,5 +52,6 @@ jobs:
       - name: Deploy Function App
         uses: azure/functions-action@v1
         with:
-          app-name: IngestIQ-staging
+          app-name: IngestIQ
+          slot-name: staging
           package: ./apps/api
