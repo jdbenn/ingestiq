@@ -72,6 +72,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          npm install -g azure-functions-core-tools@4 --unsafe-perm true
           pnpm install
           pnpm turbo run build
 
