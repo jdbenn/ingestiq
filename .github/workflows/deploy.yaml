@@ -73,7 +73,7 @@ jobs:
       - name: Install dependencies
         run: |
           pnpm install
-          turbo build
+          pnpm run turbo build
 
       - name: Zip api
         run: |
