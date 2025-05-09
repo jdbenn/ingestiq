@@ -72,8 +72,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --filter=api
-          turbo build --filter=api
+          pnpm install
+          turbo build
 
       - name: Zip api
         run: |
