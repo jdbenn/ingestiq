@@ -85,4 +85,5 @@ jobs:
 
       - name: Deploy Api
         run: |
-          pnpm func azure functionapp publish ${{ env.AZURE_FUNCTIONAPP_NAME }} 
+          cd apps/api
+          func azure functionapp publish ${{ env.AZURE_FUNCTIONAPP_NAME }} 
