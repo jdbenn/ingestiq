@@ -68,6 +68,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd apps/api
+          npm install -g typescript
           npm install --omit=dev
           npm run build
 
@@ -83,4 +84,4 @@ jobs:
         id: deploy-to-function-app
         with:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: ${{ env.AZURE_FUNCTIONAPP_PROJECT_PATH }}   
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}   
