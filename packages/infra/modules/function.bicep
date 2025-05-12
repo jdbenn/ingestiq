@@ -7,7 +7,7 @@ param storageAccountName string
 @description('Project name used for naming/tagging')
 param projectName string
 
-var hostingPlanName = '${functionAppName}-plan'
+var hostingPlanName = '${functionAppName}-functionapp-plan'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' existing = {
   name: storageAccountName
@@ -33,7 +33,7 @@ var storageKey = storageAccount.listKeys().keys[0].value
 var azureWebJobsStorage = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageKey};EndpointSuffix=core.windows.net'
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: functionAppName
+  name: '${functionAppName}-functionapp'
   location: resourceGroup().location
   kind: 'functionapp,linux'
   identity: {

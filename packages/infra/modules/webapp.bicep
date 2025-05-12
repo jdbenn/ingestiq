@@ -5,8 +5,8 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: '${projectName}-webapp-plan'
   location: resourceGroup().location
   sku: {
-    name: 'B1'
-    tier: 'Basic'
+    name: 'S1'
+    tier: 'Standard'
   }
   properties: {
     reserved: true
