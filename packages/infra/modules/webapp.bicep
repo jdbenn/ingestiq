@@ -2,7 +2,7 @@ param projectName string
 param nodeVersion string = '20'
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: '${projectName}-webapp-plan'
+  name: '${toLower(projectName)}-webapp-plan'
   location: resourceGroup().location
   sku: {
     name: 'S1'

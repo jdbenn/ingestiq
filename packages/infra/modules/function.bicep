@@ -15,7 +15,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' existing 
 
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: hostingPlanName
+  name: toLower(hostingPlanName)
   location: resourceGroup().location
   sku: {
     name: 'Y1'
@@ -33,7 +33,7 @@ var storageKey = storageAccount.listKeys().keys[0].value
 var azureWebJobsStorage = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageKey};EndpointSuffix=core.windows.net'
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: '${functionAppName}-functionapp'
+  name: '${toLower(functionAppName)}-functionapp'
   location: resourceGroup().location
   kind: 'functionapp,linux'
   identity: {

@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  AZURE_FUNCTIONAPP_NAME: 'IngestIq'   
+  AZURE_FUNCTIONAPP_NAME: 'IngestIQ-functionapp'   
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'apps/api'     
   RESOURCE_GROUP: "IngestIQ"  
   NODE_VERSION: '20.x'     
@@ -89,10 +89,14 @@ jobs:
       - name: Install Yarn
         run: corepack enable && corepack prepare yarn@stable --activate
 
+      - name: Install Turbo
+        run: npm install -g turbo
+        env:
+          YARN_CACHE_FOLDER: ${{ github.workspace }}/.yarn-cache
+
       - name: Install and Build 
         run: |
           yarn install --no-immutable
-          yarn add turbo --dev
           turbo build --filter=web
 
       - name: Azure Login
