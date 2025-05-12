@@ -108,7 +108,7 @@ jobs:
 
       - name: Install and Build 
         run: |
-          yarn install
+          yarn install --no-immutable
           turbo build --filter=web
       - name: Azure Login
         uses: azure/login@v1
