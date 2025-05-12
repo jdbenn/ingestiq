@@ -7,8 +7,11 @@ on:
 
 env:
   AZURE_FUNCTIONAPP_NAME: 'IngestIq'   
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'apps/api'       
-  NODE_VERSION: '22.x'     
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'apps/api'     
+  RESOURCE_GROUP: "IngestIQ"  
+  ACR_NAME: 'ingestiq-registry'
+  NODE_VERSION: '20.x'     
+  AZURE_WEBAPP_NAME: 'ingestiq-webapp'
 
 permissions:
   id-token: write
@@ -55,8 +58,8 @@ jobs:
           template: ./packages/infra/main.bicep
           parameters: subscriptionId=${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-  staging:
-    name: Deploy Staging
+  staging-api:
+    name: Deploy Staging API
     needs: infra
     runs-on: ubuntu-latest
     steps:
@@ -87,3 +90,50 @@ jobs:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}   
           slot-name: staging
+
+  staging-web:
+    name: Deploy Staging Web App
+    needs: infra
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Yarn
+        run: corepack enable && corepack prepare yarn@stable --activate
+
+      - name: Install and Build 
+        run: |
+          yarn install --immutable
+          turbo build --filter=web
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Login to ACR
+        run: az acr login --name ${{ env.ACR_NAME }}
+
+      - name: Set IMAGE_TAG
+        run: echo "IMAGE_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      - name: Build and push Docker images
+        working-directory: apps/web
+        run: |
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/web:${{ env.IMAGE_TAG }} -t ${{ env.ACR_NAME }}.azurecr.io/web:latest .
+          docker push ${{ env.ACR_NAME }}.azurecr.io/web:${{ env.IMAGE_TAG }}
+          docker push ${{ env.ACR_NAME }}.azurecr.io/web:latest
+
+      - name: Update Web App to Use New Image Tag
+        run: |
+          az webapp config container set \
+            --name "${{ env.AZURE_WEBAPP_NAME }}" \
+            --resource-group "${{ env.RESOURCE_GROUP }}" \
+            --docker-custom-image-name "${{ env.ACR_NAME }}.azurecr.io/web:${{ env.IMAGE_TAG }}" \
+            --enable-app-service-storage false

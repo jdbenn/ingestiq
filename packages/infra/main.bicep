@@ -25,3 +25,12 @@ module function 'modules/function.bicep' = {
     projectName: projectName
   }
 }
+
+module webapp 'modules/webapp.bicep' = {
+  name: 'webapp'
+  scope: ingestrg
+  params: {
+    projectName: projectName
+    containerPort: 4000
+  }
+}
