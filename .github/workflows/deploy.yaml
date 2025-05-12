@@ -73,7 +73,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd apps/api
-          npm ci
+          npm i
           npm run build
 
       - name: Azure Login
