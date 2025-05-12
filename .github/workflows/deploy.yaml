@@ -21,26 +21,11 @@ jobs:
   infra:
     name: Deploy Infrastructure
     runs-on: ubuntu-latest
-    outputs:
-      deployed: ${{ steps.deploy.outputs.deployed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Check if packages/infra has changes
-        id: check
-        run: |
-          git fetch origin main
-          if git diff --quiet origin/main...HEAD -- packages/infra/; then
-            echo "No infra changes"
-            echo "need_deploy=false" >> $GITHUB_OUTPUT
-          else
-            echo "Infra changes detected"
-            echo "need_deploy=true" >> $GITHUB_OUTPUT
-          fi
-
       - name: Azure Login
-        if: steps.check.outputs.need_deploy == 'true'
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -48,7 +33,6 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       - name: Deploy Infrastructure
-        if: steps.check.outputs.need_deploy == 'true'
         id: deploy
         uses: azure/arm-deploy@v1
         with:
@@ -109,6 +93,7 @@ jobs:
       - name: Install and Build 
         run: |
           yarn install --no-immutable
+          yarn add turbo --dev
           turbo build --filter=web
       - name: Azure Login
         uses: azure/login@v1
