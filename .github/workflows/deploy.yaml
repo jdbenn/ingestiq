@@ -9,7 +9,6 @@ env:
   AZURE_FUNCTIONAPP_NAME: 'IngestIq'   
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'apps/api'     
   RESOURCE_GROUP: "IngestIQ"  
-  ACR_NAME: 'ingestiq-registry'
   NODE_VERSION: '20.x'     
   AZURE_WEBAPP_NAME: 'ingestiq-webapp'
 
@@ -95,6 +94,7 @@ jobs:
           yarn install --no-immutable
           yarn add turbo --dev
           turbo build --filter=web
+
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -102,23 +102,13 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Login to ACR
-        run: az acr login --name ${{ env.ACR_NAME }}
-
-      - name: Set IMAGE_TAG
-        run: echo "IMAGE_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
-
-      - name: Build and push Docker images
+      - name: Zip build output
         working-directory: apps/web
-        run: |
-          docker build -t ${{ env.ACR_NAME }}.azurecr.io/web:${{ env.IMAGE_TAG }} -t ${{ env.ACR_NAME }}.azurecr.io/web:latest .
-          docker push ${{ env.ACR_NAME }}.azurecr.io/web:${{ env.IMAGE_TAG }}
-          docker push ${{ env.ACR_NAME }}.azurecr.io/web:latest
+        run: zip -r deploy.zip dist/
 
-      - name: Update Web App to Use New Image Tag
-        run: |
-          az webapp config container set \
-            --name "${{ env.AZURE_WEBAPP_NAME }}" \
-            --resource-group "${{ env.RESOURCE_GROUP }}" \
-            --docker-custom-image-name "${{ env.ACR_NAME }}.azurecr.io/web:${{ env.IMAGE_TAG }}" \
-            --enable-app-service-storage false
+      - name: Deploy to App Service
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: 'staging'
+          package: './apps/web/deploy.zip'

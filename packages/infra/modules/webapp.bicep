@@ -1,17 +1,5 @@
 param projectName string
-param containerPort int = 4000
-
-resource registry 'Microsoft.ContainerRegistry/registries@2025-04-01' = {
-  name: '${toLower(projectName)}-registry'
-  location: resourceGroup().location
-  sku: {
-    name: 'Basic'
-  }
-  properties: {
-    adminUserEnabled: false
-    publicNetworkAccess: 'Disabled'
-  }
-}
+param nodeVersion string = '20'
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: '${projectName}-webapp-plan'
@@ -31,23 +19,26 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
 resource appService 'Microsoft.Web/sites@2024-04-01' = {
   name: '${toLower(projectName)}-webapp'
   location: resourceGroup().location
-  kind: 'linux,app,container'
+  kind: 'app,linux'
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|${registry.name}.azurecr.io/${projectName}-webapp:latest'
-      acrUseManagedIdentityCreds: true
+      linuxFxVersion: 'NODE|${nodeVersion}'
       appSettings: [
         {
-          name: 'WEBSITES_PORT'
-          value: '${containerPort}'
+          name: 'WEBSITE_NODE_DEFAULT_VERSION'
+          value: nodeVersion
         }
         {
-          name: 'DOCKER_REGISTRY_SERVER_URL'
-          value: 'https://${registry.name}.azurecr.io'
+          name: 'PORT'
+          value: '8080'
+        }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '1'
         }
       ]
     }
@@ -55,15 +46,31 @@ resource appService 'Microsoft.Web/sites@2024-04-01' = {
   }
 }
 
-resource acrRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(appService.id, 'acrpull')
-  scope: registry
+
+resource stagingSlot 'Microsoft.Web/sites/slots@2024-04-01' = {
+  parent: appService
+  name: 'staging'
+  location: resourceGroup().location
+  kind: 'app,linux'
   properties: {
-    roleDefinitionId: subscriptionResourceId(
-      'Microsoft.Authorization/roleDefinitions',
-      '7f951dda-4ed3-4680-a7ca-43fe172d538d'
-    )
-    principalId: appService.identity.principalId
-    principalType: 'ServicePrincipal'
+    serverFarmId: hostingPlan.id
+    siteConfig: {
+      linuxFxVersion: 'NODE|${nodeVersion}'
+      appSettings: [
+        {
+          name: 'WEBSITE_NODE_DEFAULT_VERSION'
+          value: nodeVersion
+        }
+        {
+          name: 'PORT'
+          value: '8080'
+        }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '1'
+        }
+      ]
+    }
+    httpsOnly: true
   }
 }
