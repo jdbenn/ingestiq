@@ -68,8 +68,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd apps/api
-          npm install -g typescript
-          npm install --omit=dev
+          npm ci
           npm run build
 
       - name: Azure Login

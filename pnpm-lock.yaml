@@ -27,9 +27,6 @@ importers:
         specifier: ^4.0.0
         version: 4.7.0
     devDependencies:
-      '@types/node':
-        specifier: 18.x
-        version: 18.19.98
       azure-functions-core-tools:
         specifier: ^4.x
         version: 4.0.7030
