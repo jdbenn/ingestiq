@@ -1,0 +1,35 @@
+# Step 1: Use an official Node.js image as the base image
+FROM node:20 AS builder
+
+# Step 2: Set the working directory inside the container
+WORKDIR /app
+
+# Step 3: Copy the package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Step 4: Install dependencies using npm
+RUN npm install
+
+# Step 5: Copy the rest of the application code
+COPY . .
+
+# Step 6: Build the Angular application (browser and server bundles)
+RUN npm run build:ssr
+
+# Step 7: Set the base image for the production environment
+FROM node:20 AS production
+
+# Set the working directory inside the container for production
+WORKDIR /app
+
+# Copy the built files from the builder stage
+COPY --from=builder /app/dist /app/dist
+
+# Copy the necessary server-side code (e.g., server.ts)
+COPY --from=builder /app/server.ts /app/
+
+# Expose the port that the app will run on (default Angular SSR port)
+EXPOSE 4000
+
+# Run the Angular SSR server with node
+CMD ["node", "dist/web/server/server.mjs"]

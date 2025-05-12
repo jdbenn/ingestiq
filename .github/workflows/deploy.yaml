@@ -16,6 +16,7 @@ permissions:
 
 jobs:
   infra:
+    name: Deploy Infrastructure
     runs-on: ubuntu-latest
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -54,7 +55,8 @@ jobs:
           template: ./packages/infra/main.bicep
           parameters: subscriptionId=${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-  api:
+  staging:
+    name: Deploy Staging
     needs: infra
     runs-on: ubuntu-latest
     steps:
@@ -84,3 +86,4 @@ jobs:
         with:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}   
+          slot-name: staging
