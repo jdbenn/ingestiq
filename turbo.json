@@ -18,6 +18,10 @@
     },
     "prettier": {
       "dependsOn": []
+    },
+    "serve": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

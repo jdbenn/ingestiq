@@ -1,0 +1,14 @@
+# Step 1: Use Node.js base image for the production environment
+FROM node:20 AS production
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the pre-built dist directory from your local machine into the container
+COPY ./dist /app/dist
+
+# Expose the SSR port (typically port 4000 for Angular SSR apps)
+EXPOSE 4000
+
+# Run the SSR server with Node.js (entry point assumed to be server.mjs)
+CMD ["node", "dist/web/server/server.mjs"]
