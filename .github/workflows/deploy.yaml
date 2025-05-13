@@ -37,15 +37,15 @@ jobs:
         with:
           type: deploymentStack
           operation: create
-          name: Deployment
+          name: ${{ env.RESOURCE_GROUP }}
           location: ${{ env.AZURE_REGION }}
           scope: subscription
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template-file: ./packages/infra/main.bicep
           action-on-unmanage-resources: delete
           action-on-unmanage-resourcegroups: delete
-          deny-settings-mode: denyWriteAndDelete
-          description: "IngestIQ Stack"
+          deny-settings-mode: none
+          description: ${{ env.RESOURCE_GROUP }} stack
 
   staging-api:
     name: Deploy Staging API
