@@ -40,6 +40,5 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template-file: ./packages/infra/main.bicep
           action-on-unmanage-resources: delete
-          action-on-unmanage-resourcegroups: delete
           deny-settings-mode: denyWriteAndDelete
-          description: "ignore"
+          resource-group-name: ${{ env.RESOURCE_GROUP }}
