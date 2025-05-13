@@ -41,3 +41,4 @@ jobs:
           template-file: ./packages/infra/main.bicep
           action-on-unmanage-resources: delete
           action-on-unmanage-resourcegroups: delete
+          deny-settings-mode: none
