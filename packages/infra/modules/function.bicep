@@ -42,7 +42,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      linuxFxVersion: 'NODE|20'
+      linuxFxVersion: 'NODE|22'
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
@@ -74,7 +74,7 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2024-04-01' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      linuxFxVersion: 'NODE|20'
+      linuxFxVersion: 'NODE|22'
       appSettings: [
         {
           name: 'AzureWebJobsStorage'

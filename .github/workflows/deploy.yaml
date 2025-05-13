@@ -59,11 +59,31 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Setup Yarn
+        run: |
+          npm install -g yarn
+
       - name: Install dependencies
         run: |
-          cd apps/api
-          npm i
-          npm run build
+          npm install -g azure-functions-core-tools@4 --unsafe-perm true
+          yarn install --no-immutable
+          yarn build
+
+      - name: Prepare API package for Azure Functions
+        working-directory: apps/api
+        run: |
+          mkdir -p deploy
+          cp -r dist deploy/
+          cp host.json deploy/
+          cp local.settings.json deploy/
+          cp package.json deploy/
+          cd deploy
+          npm install --omit=dev
+
+      - name: Package API
+        working-directory: apps/api/deploy
+        run: |
+          func pack --output ../function
 
       - name: Azure Login
         uses: azure/login@v1
@@ -77,7 +97,7 @@ jobs:
         id: deploy-to-function-app
         with:
           app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}   
+          package: apps/api/function.zip 
           slot-name: staging
 
   staging-web:
