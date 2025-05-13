@@ -1,16 +1,18 @@
 
-param subscriptionId string
+param location string = 'centralus'
 
 var projectName = 'IngestIQ'
 
-resource ingestrg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
-  name: 'IngestIQ'
-  scope: subscription(subscriptionId)
+targetScope = 'subscription'
+
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: projectName
+  location: location
 }
 
 module storage 'modules/storage.bicep' = {
   name: 'storage'
-  scope: ingestrg
+  scope: resourceGroup
   params: {
     projectName: projectName
   } 
@@ -18,7 +20,7 @@ module storage 'modules/storage.bicep' = {
 
 module function 'modules/function.bicep' = {
   name: 'function'
-  scope: ingestrg
+  scope: resourceGroup
   params: {
     functionAppName: 'IngestIQ'
     storageAccountName: storage.outputs.storageAccountName
@@ -28,7 +30,7 @@ module function 'modules/function.bicep' = {
 
 module webapp 'modules/webapp.bicep' = {
   name: 'webapp'
-  scope: ingestrg
+  scope: resourceGroup
   params: {
     projectName: projectName
   }
