@@ -76,7 +76,6 @@ jobs:
           mkdir -p deploy
           cp -r dist deploy/
           cp host.json deploy/
-          cp local.settings.json deploy/
           cp package.json deploy/
           cd deploy
           npm install --omit=dev 
