@@ -14,8 +14,8 @@ permissions:
   id-token: write
 
 jobs:
-  deployment:
-    name: Deployment Stack
+  validate:
+    name: Validate Stack
     runs-on: ubuntu-latest
 
     steps:
@@ -39,3 +39,7 @@ jobs:
           scope: subscription
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template-file: ./packages/infra/main.bicep
+          action-on-unmanage-resources: delete
+          action-on-unmanage-resourcegroups: delete
+          deny-settings-mode: denyWriteAndDelete
+          description: "ignore"
