@@ -64,10 +64,6 @@ jobs:
           corepack enable
           corepack prepare yarn@4.9.1 --activate
 
-      - name: Setup Yarn
-        run: |
-          npm install -g yarn
-
       - name: Install dependencies
         run: |
           npm install -g azure-functions-core-tools@4 --unsafe-perm true
