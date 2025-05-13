@@ -59,6 +59,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
+      - name: Enable Corepack and prepare Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.9.1 --activate
+
       - name: Setup Yarn
         run: |
           npm install -g yarn
@@ -78,7 +83,7 @@ jobs:
           cp local.settings.json deploy/
           cp package.json deploy/
           cd deploy
-          npm install --omit=dev
+          npm install --omit=dev 
 
       - name: Package API
         working-directory: apps/api/deploy
