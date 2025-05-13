@@ -84,7 +84,7 @@ jobs:
       - name: Package API
         working-directory: apps/api/deploy
         run: |
-          func pack --output ../function
+          func pack --javascript --output ../function
 
       - name: Azure Login
         uses: azure/login@v1
@@ -114,7 +114,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install Yarn
-        run: corepack enable && corepack prepare yarn@stable --activate
+        run: corepack enable && corepack prepare yarn@4.9.1 --activate
 
       - name: Install Turbo
         run: npm install -g turbo
