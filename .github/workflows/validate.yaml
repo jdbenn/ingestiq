@@ -36,7 +36,7 @@ jobs:
           operation: validate
           name: Development
           location: ${{ env.REGION }}
-          scope: subscription
+          scope: resourceGroup
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           template-file: ./packages/infra/main.bicep
           action-on-unmanage-resources: delete
