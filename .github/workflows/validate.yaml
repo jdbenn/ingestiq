@@ -1,0 +1,41 @@
+name: Stacks (Validate)
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  REGION: 'centralus'
+  RESOURCE_GROUP: 'IngestIQ'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deployment:
+    name: Deployment Stack
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Validate
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deploymentStack
+          operation: validate
+          name: Development
+          location: ${{ env.REGION }}
+          scope: subscription
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          template-file: ./packages/infra/main.bicep

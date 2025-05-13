@@ -32,6 +32,9 @@ module webapp 'modules/webapp.bicep' = {
   params: {
     projectName: projectName
   }
+  dependsOn: [
+    function
+  ]
 }
 
 
