@@ -2983,8 +2983,8 @@ __metadata:
 
 "@repo/eslint-config@file:../../packages/eslint-config::locator=web%40workspace%3Aapps%2Fweb":
   version: 0.0.0
-  resolution: "@repo/eslint-config@file:../../packages/eslint-config#../../packages/eslint-config::hash=c5d803&locator=web%40workspace%3Aapps%2Fweb"
-  checksum: 10c0/e1d8280642b39e9be9901d98af2289c079ebb186d8332f6409fae483ac973788dac1f3d28f0725abd6ff2bd93f1d80906adbb06fa2709baa049ed2f21c81daeb
+  resolution: "@repo/eslint-config@file:../../packages/eslint-config#../../packages/eslint-config::hash=f38ac1&locator=web%40workspace%3Aapps%2Fweb"
+  checksum: 10c0/97e0336e3cf0adccce114753c0fe29801d8977e3c7802ca419092c946584c69cb2ab6e2b64c1559bc4c149e4bc578806ab1b6195a784ea2081427f626d41fa3e
   languageName: node
   linkType: hard
 
@@ -3003,7 +3003,7 @@ __metadata:
 
 "@repo/ui@file:../../packages/shared::locator=web%40workspace%3Aapps%2Fweb":
   version: 0.0.0
-  resolution: "@repo/ui@file:../../packages/shared#../../packages/shared::hash=0e7c62&locator=web%40workspace%3Aapps%2Fweb"
+  resolution: "@repo/ui@file:../../packages/shared#../../packages/shared::hash=f6d311&locator=web%40workspace%3Aapps%2Fweb"
   dependencies:
     "@angular/animations": "npm:^19.2.10"
     "@angular/cdk": "npm:19.2.15"
@@ -3018,7 +3018,7 @@ __metadata:
     rxjs: "npm:~7.8.0"
     tslib: "npm:^2.3.0"
     zone.js: "npm:~0.15.0"
-  checksum: 10c0/a50fa0263f1015e5bb6304dd118fd5b01f47fd56081c0e30fc6c10ed58225b8f283ed4429da31e3c64647f5b16cd3683a2aee6eb059a391e94dc252dc8881cc0
+  checksum: 10c0/6f4d4191b914a1d119f1404d4b235fe6af57d3b3def8c3f0981c13c96f07eb015ac3a89961b96247de2cec131f33e10f78780f93567b60650958a7956ac218e6
   languageName: node
   linkType: hard
 
@@ -3646,7 +3646,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=10.0.0":
+"@types/node@npm:*, @types/node@npm:22.x, @types/node@npm:>=10.0.0":
   version: 22.15.17
   resolution: "@types/node@npm:22.15.17"
   dependencies:
@@ -3655,7 +3655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.x, @types/node@npm:^18.18.0":
+"@types/node@npm:^18.18.0":
   version: 18.19.100
   resolution: "@types/node@npm:18.19.100"
   dependencies:
@@ -4381,7 +4381,7 @@ __metadata:
   resolution: "api@workspace:apps/api"
   dependencies:
     "@azure/functions": "npm:^4.0.0"
-    "@types/node": "npm:18.x"
+    "@types/node": "npm:22.x"
     azure-functions-core-tools: "npm:^4.x"
     rimraf: "npm:^5.0.0"
     typescript: "npm:^4.0.0"

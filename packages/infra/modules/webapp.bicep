@@ -1,5 +1,5 @@
 param projectName string
-param nodeVersion string = '20'
+param nodeVersion string = '22'
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: '${toLower(projectName)}-webapp-plan'
