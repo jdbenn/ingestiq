@@ -33,6 +33,7 @@ module webapp 'modules/webapp.bicep' = {
   scope: resourceGroup
   params: {
     projectName: projectName
+    hostName: 'ingestiq.thescreaminggoat.xyz'
   }
   dependsOn: [
     function
