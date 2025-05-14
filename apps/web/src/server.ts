@@ -7,12 +7,23 @@ import {
 import express from 'express';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import * as appInsights from 'applicationinsights'
+
+// eslint-disable-next-line turbo/no-undeclared-env-vars
+appInsights.setup(process.env['APPLICATION_INSIGHTS_CONNECTION_STRING'])
+.setAutoCollectRequests(true)
+.setAutoCollectPerformance(true, true)
+.setAutoCollectExceptions(true)
+.setAutoCollectDependencies(true)
+.setAutoCollectDependencies(true)
+.start();
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
 
 /**
  * Example Express Rest API endpoints can be defined here.

@@ -10,7 +10,8 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "@azure/functions": "^4.0.0"
+    "@azure/functions": "^4.0.0",
+    "applicationinsights": "^3.7.0"
   },
   "devDependencies": {
     "@types/node": "22.x",
