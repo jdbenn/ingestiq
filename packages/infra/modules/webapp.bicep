@@ -29,35 +29,6 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-resource diagSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
-  name: '${webApp.name}-diagnostics'
-  scope: appInsights
-  properties: {
-    workspaceId: toLower(projectName)
-    logs: [
-      {
-        category: 'AppServiceHTTPLogs'
-        enabled: true
-      }
-      {
-        category: 'AppServiceConsoleLogs'
-        enabled: true
-      }
-      {
-        category: 'AppServiceAppLogs'
-        enabled: true
-      }
-    ]
-    metrics: [
-      {
-        category: 'AllMetrics'
-        enabled: true
-      }
-    ]
-  }
-}
-
-
 resource webApp 'Microsoft.Web/sites@2024-04-01' = {
   name: '${toLower(projectName)}-webapp'
   location: resourceGroup().location
@@ -193,7 +164,7 @@ resource stagingCertificate 'Microsoft.Web/certificates@2024-04-01' = {
 module stagingHostEnable 'sni-enable.bicep' = {
   name: '${deployment().name}-${stagingSlot.name}-sni-enable'
   params: {
-    AppName: stagingSlot.name
+    AppName: '${webApp.name}/staging'
     AppHostName: 'staging.${hostName}'
     certificateThumbprint: stagingCertificate.properties.thumbprint
   }
