@@ -169,7 +169,7 @@ module customHostEnable 'sni-enable.bicep' = {
 
 resource stagingCustomHost 'Microsoft.Web/sites/slots/hostNameBindings@2024-04-01' = {
   parent: stagingSlot
-  name: hostName
+  name: 'staging.${hostName}'
   properties: {
     hostNameType: 'Verified'
     sslState: 'Disabled'
