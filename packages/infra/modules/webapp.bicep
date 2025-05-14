@@ -74,15 +74,36 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2024-04-01' = {
   parent: webApp
   name: 'staging'
   location: resourceGroup().location
+  kind: 'app,linux'
   properties: {
+    serverFarmId: hostingPlan.id
     siteConfig: {
+      linuxFxVersion: 'NODE|${nodeVersion}-lts'
+      appCommandLine: 'node /home/site/wwwroot/dist/server/server.js'
       appSettings: [
+        {
+          name: 'WEBSITE_NODE_DEFAULT_VERSION'
+          value: nodeVersion
+        }
+        {
+          name: 'PORT'
+          value: '8080'
+        }
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: appInsights.properties.InstrumentationKey
+        }
+        {
+          name: 'APPLICATION_INSIGHTS_CONNECTION_STRING'
+          value: appInsights.properties.ConnectionString
+        }
         {
           name: 'APPINSIGHTS_ROLE_NAME'
           value: 'webapp-staging'
         }
       ]
     }
+    httpsOnly: true
   }
 }
 
