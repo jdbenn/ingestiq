@@ -75,6 +75,9 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2024-04-01' = {
   name: 'staging'
   location: resourceGroup().location
   kind: 'app,linux'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
@@ -139,14 +142,15 @@ module customHostEnable 'sni-enable.bicep' = {
   }
 }
 
+var fullStagingHostName = 'staging.${hostName}'
+
 resource stagingCustomHost 'Microsoft.Web/sites/slots/hostNameBindings@2024-04-01' = {
-  parent: stagingSlot
-  name: 'staging.${hostName}'
+  name: '${webApp.name}/staging/${fullStagingHostName}'
   properties: {
     hostNameType: 'Verified'
     sslState: 'Disabled'
     customHostNameDnsRecordType: 'CName'
-    siteName: stagingSlot.name
+    siteName: webApp.name
   }
 }
 
@@ -158,15 +162,16 @@ resource stagingCertificate 'Microsoft.Web/certificates@2024-04-01' = {
   ]
   properties: {
     serverFarmId: hostingPlan.id
-    canonicalName: 'staging.${hostName}'
+    canonicalName: fullStagingHostName
   }
 }
 
-module stagingHostEnable 'sni-enable.bicep' = {
+module stagingHostEnable 'sni-enable-slot.bicep' = {
   name: '${deployment().name}-${stagingSlot.name}-sni-enable'
   params: {
-    AppName: '${webApp.name}/staging'
-    AppHostName: 'staging.${hostName}'
+    AppName: webApp.name
+    SlotName: 'staging'
+    HostName: fullStagingHostName
     certificateThumbprint: stagingCertificate.properties.thumbprint
   }
 }
