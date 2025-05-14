@@ -29,6 +29,8 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
+var startCommand = 'node /home/site/wwwroot/dist/web/server/server.mjs'
+
 resource webApp 'Microsoft.Web/sites@2024-04-01' = {
   name: '${toLower(projectName)}-webapp'
   location: resourceGroup().location
@@ -41,7 +43,7 @@ resource webApp 'Microsoft.Web/sites@2024-04-01' = {
     siteConfig: {
       nodeVersion: nodeVersion
       linuxFxVersion: 'NODE|${nodeVersion}-lts'
-      appCommandLine: 'node /home/site/wwwroot/dist/server/server.js'
+      appCommandLine: startCommand
       appSettings: [
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
@@ -82,7 +84,7 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2024-04-01' = {
     serverFarmId: hostingPlan.id
     siteConfig: {
       linuxFxVersion: 'NODE|${nodeVersion}-lts'
-      appCommandLine: 'node /home/site/wwwroot/dist/server/server.js'
+      appCommandLine: startCommand
       appSettings: [
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
