@@ -2,13 +2,12 @@
   <mat-icon>format_color_fill</mat-icon>
 </button>
 <mat-menu #themeMenu="matMenu">
-  @for(theme of themes();track theme.id) {
-
-  <button mat-menu-item (click)="setTheme(theme.id)">
-    <div class="theme-menu-item" [style.background-color]="theme.primary">
-      <img [ngSrc]="theme.iconUrl" [alt]="theme.displayName" [width]="size" [height]="size" />
-      <span class="theme-menu-item-text">{{ theme.displayName }}</span>
-    </div>
-  </button>
+  @for (theme of themes(); track theme.id) {
+    <button mat-menu-item (click)="setTheme(theme.id)">
+      <div class="theme-menu-item" [style.background-color]="theme.primary">
+        <img [ngSrc]="theme.iconUrl" [alt]="theme.displayName" [width]="size" [height]="size" />
+        <span class="theme-menu-item-text">{{ theme.displayName }}</span>
+      </div>
+    </button>
   }
 </mat-menu>

@@ -5,7 +5,7 @@
   ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^lint","^build"],
       "outputs": ["dist/**"]
     },
     "lint": {
@@ -19,7 +19,7 @@
       "cache": false
     },
     "prettier": {
-      "dependsOn": []
+      "dependsOn": ["^prettier"]
     },
     "serve": {
       "cache": false,
