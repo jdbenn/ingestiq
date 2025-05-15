@@ -4091,7 +4091,7 @@ __metadata:
 
 "@repo/ui@file:../../packages/shared::locator=web%40workspace%3Aapps%2Fweb":
   version: 0.0.0
-  resolution: "@repo/ui@file:../../packages/shared#../../packages/shared::hash=7102d8&locator=web%40workspace%3Aapps%2Fweb"
+  resolution: "@repo/ui@file:../../packages/shared#../../packages/shared::hash=cda243&locator=web%40workspace%3Aapps%2Fweb"
   dependencies:
     "@angular/animations": "npm:^19.2.10"
     "@angular/cdk": "npm:19.2.15"
@@ -4106,7 +4106,7 @@ __metadata:
     rxjs: "npm:~7.8.0"
     tslib: "npm:^2.3.0"
     zone.js: "npm:~0.15.0"
-  checksum: 10c0/36efe7d294da4e4d230fcb33a6b1d9e26d7a59f0bf600cc98c1998ac51030779b6c92335ff47fc6b7eb688580ac403bf769b5f9bcaea63e040ce35f2e68bd349
+  checksum: 10c0/ad74aff21c05229ffcfbb36439a44094fae33711c32c80c7e250f819fc5dc2ef18bebfdd885cc17ea31ce1b78b53fa670e1ab9a64b781ccc3957805ed38a873e
   languageName: node
   linkType: hard
 
