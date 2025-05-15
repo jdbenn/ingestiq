@@ -1,5 +1,12 @@
 param projectName string
 param nodeVersion string = '22'
+param frontDoorProfileId string
+
+resource frontDoorProfile 'Microsoft.Cdn/profiles@2025-04-15' existing = {
+  name: last(split(frontDoorProfileId, '/'))
+}
+
+var frontDoorFdid = frontDoorProfile.properties.frontDoorId
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: '${toLower(projectName)}-webapp-plan'
@@ -63,6 +70,18 @@ resource webApp 'Microsoft.Web/sites@2024-04-01' = {
         {
           name: 'APPINSIGHTS_ROLE_NAME'
           value: 'webapp'
+        }
+      ]
+      ipSecurityRestrictions:[
+        {
+          ipAddress: 'AzureFrontDoor.Backend'
+          tag: 'ServiceTag'
+          action: 'Allow'
+          priority: 100
+          name: 'Allow Azure Front Door Traffic'
+          headers: {
+            'x-azure-fdid': [ frontDoorFdid ]
+          }
         }
       ]
     }

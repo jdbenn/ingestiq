@@ -1,11 +1,7 @@
-@description('Name of the Function App')
 param functionAppName string
-
-@description('Name of the existing storage account')
 param storageAccountName string
-
-@description('Project name used for naming/tagging')
 param projectName string
+param frontDoorProfileId string
 
 var hostingPlanName = '${functionAppName}-functionapp-plan'
 
@@ -13,6 +9,11 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' existing 
   name: storageAccountName
 }
 
+resource frontDoorProfile 'Microsoft.Cdn/profiles@2025-04-15' existing = {
+  name: last(split(frontDoorProfileId, '/'))
+}
+
+var frontDoorFdid = frontDoorProfile.properties.frontDoorId
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: toLower(hostingPlanName)
@@ -55,6 +56,18 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
           value: 'node'
+        }
+      ]
+      ipSecurityRestrictions:[
+        {
+          ipAddress: 'AzureFrontDoor.Backend'
+          tag: 'ServiceTag'
+          action: 'Allow'
+          priority: 100
+          name: 'Allow Azure Front Door Traffic'
+          headers: {
+            'x-azure-fdid': [ frontDoorFdid ]
+          }
         }
       ]
     }
