@@ -37,14 +37,14 @@ export class ThemeService {
 const themes: Theme[] = [
   {
     id: 'bears',
-    iconUrl: 'https://images.seeklogo.com/logo-png/20/1/chicago-bears-logo-png_seeklogo-203479.png',
+    iconUrl: 'assets/bears.png',
     primary: '#0B162A',
     displayName: 'Bears'
   },
   {
     id: 'blackhawks',
     iconUrl:
-      'https://images.seeklogo.com/logo-png/22/1/chicago-blackhawks-logo-png_seeklogo-223478.png',
+      'assets/blackhawks.png',
     primary: '#C8102E',
     displayName: 'Blackhawks'
   }

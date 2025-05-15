@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "eslint . --max-warnings 0",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .angular",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf .angular && rm -rf dist",
     "prettier": "prettier --write .",
     "serve": "node dist/web/server/server.mjs"
   },
