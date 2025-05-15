@@ -2,11 +2,12 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "pnpm",
+    "packageManager": "yarn",
     "cache": {
       "enabled": false
     },
-    "analytics": "246cefae-fb88-475a-902a-ce4568d2b818"
+    "analytics": "246cefae-fb88-475a-902a-ce4568d2b818",
+    "schematicCollections": ["angular-eslint"]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -36,6 +37,13 @@
           "options": {
             "tsConfig": "projects/ui/tsconfig.spec.json",
             "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/ui/**/*.ts", "projects/ui/**/*.html"],
+            "eslintConfig": "projects/ui/eslint.config.js"
           }
         }
       }

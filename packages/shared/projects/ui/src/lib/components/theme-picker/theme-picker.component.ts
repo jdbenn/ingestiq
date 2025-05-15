@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -12,7 +12,7 @@ import { Theme } from '../../model/interface';
   templateUrl: './theme-picker.component.html',
   styleUrl: './theme-picker.component.scss'
 })
-export class ThemePickerComponent {
+export class ThemePickerComponent implements OnInit {
   private readonly themeService = inject(ThemeService);
   protected readonly size = 30;
   protected readonly themes = signal<Theme[]>([]);

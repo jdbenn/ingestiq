@@ -1,6 +1,5 @@
 param projectName string
 param nodeVersion string = '22'
-param hostName string
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: '${toLower(projectName)}-webapp-plan'
@@ -112,68 +111,4 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2024-04-01' = {
   }
 }
 
-resource customHost 'Microsoft.Web/sites/hostNameBindings@2024-04-01' = {
-  parent: webApp
-  name: hostName
-  properties: {
-    hostNameType: 'Verified'
-    sslState: 'Disabled'
-    customHostNameDnsRecordType: 'CName'
-    siteName: webApp.name
-  }
-}
-
-resource certificate 'Microsoft.Web/certificates@2024-04-01' = {
-  name: '${webApp.name}-webapp-cert'
-  location: resourceGroup().location
-  dependsOn:[
-    customHost
-  ]
-  properties: {
-    serverFarmId: hostingPlan.id
-    canonicalName: hostName
-  }
-}
-
-module customHostEnable 'sni-enable.bicep' = {
-  name: '${deployment().name}-${webApp.name}-sni-enable'
-  params: {
-    AppName: webApp.name
-    AppHostName: hostName
-    certificateThumbprint: certificate.properties.thumbprint
-  }
-}
-
-var fullStagingHostName = 'staging.${hostName}'
-
-resource stagingCustomHost 'Microsoft.Web/sites/slots/hostNameBindings@2024-04-01' = {
-  name: '${webApp.name}/staging/${fullStagingHostName}'
-  properties: {
-    hostNameType: 'Verified'
-    sslState: 'Disabled'
-    customHostNameDnsRecordType: 'CName'
-    siteName: webApp.name
-  }
-}
-
-resource stagingCertificate 'Microsoft.Web/certificates@2024-04-01' = {
-  name: '${stagingSlot.name}-webapp-cert'
-  location: resourceGroup().location
-  dependsOn:[
-    stagingCustomHost
-  ]
-  properties: {
-    serverFarmId: hostingPlan.id
-    canonicalName: fullStagingHostName
-  }
-}
-
-module stagingHostEnable 'sni-enable-slot.bicep' = {
-  name: '${deployment().name}-${stagingSlot.name}-sni-enable'
-  params: {
-    AppName: webApp.name
-    SlotName: 'staging'
-    HostName: fullStagingHostName
-    certificateThumbprint: stagingCertificate.properties.thumbprint
-  }
-}
+output webAppHostName string = webApp.properties.defaultHostName

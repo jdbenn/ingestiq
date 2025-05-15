@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class ThemeService {
   private readonly isBrowser: boolean;
 
+  // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
   constructor(@Inject(PLATFORM_ID) platformId: Object) {
     this.isBrowser = isPlatformBrowser(platformId);
 
@@ -43,8 +44,7 @@ const themes: Theme[] = [
   },
   {
     id: 'blackhawks',
-    iconUrl:
-      'assets/blackhawks.png',
+    iconUrl: 'assets/blackhawks.png',
     primary: '#C8102E',
     displayName: 'Blackhawks'
   }

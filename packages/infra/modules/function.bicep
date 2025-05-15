@@ -93,3 +93,5 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2024-04-01' = {
     httpsOnly: true
   }
 }
+
+output functionAppHostName string = functionApp.properties.defaultHostName
